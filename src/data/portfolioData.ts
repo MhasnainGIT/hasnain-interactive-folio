@@ -7,11 +7,11 @@ export const portfolioData = {
     github: "https://github.com/your-username",
     portfolio: "https://your-portfolio.com",
     greeting: "Hey, I'm Mohammed 👋",
-    title: "AI portfolio"
+    title: "Full Stack Developer Portfolio"
   },
   
   education: {
-    degree: "B.E. in Computer Science (AI & ML)",
+    degree: "B.E. in Computer Science",
     institution: "Lords Institute of Engineering & Technology (LIET), Telangana",
     duration: "Nov 2022 – Jun 2026",
     gpa: "Add if above 7.5"
@@ -22,18 +22,18 @@ export const portfolioData = {
     frontend: ["React.js", "Tailwind CSS", "HTML5", "CSS3"],
     backend: ["Node.js", "Express.js", "REST APIs", "WebSockets"],
     database: ["MongoDB", "PostgreSQL", "MySQL"],
-    others: ["Git", "JWT", "OpenAI API", "Flask", "Figma", "Render"]
+    others: ["Git", "JWT", "Flask", "Figma", "Render"]
   },
 
   projects: [
     {
-      name: "JobReady AI – AI-Powered Resume Feedback Platform",
+      name: "JobReady – Resume Feedback Platform",
       liveDemo: "https://your-demo-link.com",
-      technologies: ["React.js", "Node.js", "Express", "MongoDB", "Tailwind CSS", "OpenAI API"],
+      technologies: ["React.js", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
       description: [
-        "Developed a full-stack platform offering GPT-based resume reviews for job seekers.",
+        "Developed a full-stack platform offering resume reviews for job seekers.",
         "Enabled structured feedback for raw resumes; increased user shortlisting success by ~25%.",
-        "Built RESTful APIs and integrated OpenAI's GPT model for semantic suggestions.",
+        "Built RESTful APIs and integrated advanced semantic suggestions.",
         "Designed clean, responsive UI with Tailwind CSS and React.js."
       ]
     },
@@ -74,7 +74,6 @@ export const portfolioData = {
 
   certifications: [
     "Google Cloud Computing Foundation – CloudSkillsBoost",
-    "Introduction to AI – IBM SkillsBuild", 
     "Full Stack Web Development – Udemy",
     "100xDevs Web Dev Bootcamp – 100xDevs"
   ],
@@ -90,7 +89,7 @@ export const portfolioData = {
       description: "National Hackathon at CMRTC"
     },
     {
-      title: "President, Artigenz Club – LIET, CSE (AI & ML)",
+      title: "President, Artigenz Club – LIET, CSE",
       description: ""
     },
     {

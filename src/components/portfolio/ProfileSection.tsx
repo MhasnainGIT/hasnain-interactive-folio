@@ -1,5 +1,3 @@
-import profileAvatar from "@/assets/profile-avatar.png";
-
 export const ProfileSection = () => {
   return (
     <div className="text-center max-w-2xl mx-auto">
@@ -16,14 +14,12 @@ export const ProfileSection = () => {
       </h2>
 
       {/* Main Title */}
-      <h1 className="text-portfolio-text font-bold text-5xl md:text-6xl lg:text-7xl mb-12 leading-tight">
-        AI portfolio
-      </h1>
+      <h1 className="font-bold text-3xl">Full Stack Developer Portfolio</h1>
 
       {/* Profile Avatar */}
       <div className="mb-12">
         <img 
-          src={profileAvatar} 
+          src="/hasnain.jpg" 
           alt="Mohammed Hasnain"
           className="w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full object-cover shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
         />

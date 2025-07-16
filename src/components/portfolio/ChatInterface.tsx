@@ -2,21 +2,31 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Send, Loader2 } from "lucide-react";
 import { portfolioData } from "@/data/portfolioData";
-import profileAvatar from "@/assets/profile-avatar.png";
 
 const generateResponse = (query: string): string => {
   const lowerQuery = query.toLowerCase();
   
   if (lowerQuery.includes("who are you") || lowerQuery.includes("about you") || lowerQuery.includes("tell me about yourself")) {
-    return `Hi! I'm Mohammed Hasnain, a passionate Full Stack Developer and AI enthusiast from Hyderabad, India. 
+    return `Hi! I'm Mohammed Hasnain, a passionate Full Stack Developer from Hyderabad, India.
 
-I'm currently pursuing B.E. in Computer Science (AI & ML) at Lords Institute of Engineering & Technology, with expected graduation in June 2026.
+I'm currently pursuing B.E. in Computer Science at Lords Institute of Engineering & Technology, with expected graduation in June 2026.
 
 I have hands-on experience as a Full Stack Developer Intern at Accendia Technologies, where I'm building project management applications for Canadian clients using React and MongoDB. Previously, I worked as a Web Developer Intern at Ram Innovative Infotech, focusing on responsive design and performance optimization.
 
-I'm particularly passionate about AI and machine learning, which you can see in my projects like JobReady AI (an AI-powered resume feedback platform) and my skin disease detection system using deep learning.
+I'm particularly passionate about software engineering and web development, which you can see in my projects like JobReady (a resume feedback platform) and my skin disease detection system using deep learning.
 
-Beyond coding, I'm a natural leader - I organized TorqueTalk, Telangana's biggest autofest with 5,000+ attendees, and serve as President of the Artigenz Club at my college. I'm always excited to take on new challenges and collaborate on innovative projects! 🚀`;
+🤖 **JobReady – Resume Feedback Platform**
+- Built with React.js, Node.js, Express, and MongoDB
+- [Live Demo Available]
+- Trained CNN model to classify 7 skin diseases using transfer learning
+
+Currently, I'm working on expanding the JobReady platform with new features like interview preparation and job matching algorithms. I'm also exploring computer vision applications in healthcare and building more tools to solve real-world problems.
+
+- Tailwind CSS
+
+**Web Development & Machine Learning:**
+
+I'm always learning new technologies and staying updated with the latest trends in web development! 🚀`;
   }
   
   if (lowerQuery.includes("projects") || lowerQuery.includes("working on")) {
@@ -190,7 +200,7 @@ export const ChatInterface = () => {
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<Array<{
-    type: 'user' | 'ai', 
+    type: 'user' | 'assistant', 
     content: string,
     isLoading?: boolean,
     fullContent?: string
@@ -213,7 +223,7 @@ export const ChatInterface = () => {
       setIsLoading(true);
       setMessages([
         { type: 'user', content: initialQuery },
-        { type: 'ai', content: '', isLoading: true }
+        { type: 'assistant', content: '', isLoading: true }
       ]);
       
       // Simulate API delay
@@ -221,7 +231,7 @@ export const ChatInterface = () => {
         const response = generateResponse(initialQuery);
         setMessages([
           { type: 'user', content: initialQuery },
-          { type: 'ai', content: response, fullContent: response }
+          { type: 'assistant', content: response, fullContent: response }
         ]);
         setIsLoading(false);
       }, 1000 + Math.random() * 1000); // 1-2 seconds delay
@@ -239,7 +249,7 @@ export const ChatInterface = () => {
       setMessages(prev => [
         ...prev,
         { type: 'user', content: userMessage },
-        { type: 'ai', content: '', isLoading: true }
+        { type: 'assistant', content: '', isLoading: true }
       ]);
       
       // Simulate API delay
@@ -247,7 +257,7 @@ export const ChatInterface = () => {
         const response = generateResponse(userMessage);
         setMessages(prev => [
           ...prev.slice(0, -1), // Remove loading message
-          { type: 'ai', content: response, fullContent: response }
+          { type: 'assistant', content: response, fullContent: response }
         ]);
         setIsLoading(false);
       }, 1000 + Math.random() * 1500); // 1-2.5 seconds delay
@@ -267,13 +277,13 @@ export const ChatInterface = () => {
           </button>
           <div className="flex items-center gap-3">
             <img 
-              src={profileAvatar} 
+              src="/hasnain.jpg" 
               alt="Mohammed Hasnain"
               className="w-10 h-10 rounded-full object-cover"
             />
             <div>
               <h1 className="font-semibold text-portfolio-text">Mohammed Hasnain</h1>
-              <p className="text-sm text-portfolio-text-muted">AI Portfolio Assistant</p>
+              <p className="text-sm text-portfolio-text-muted">Portfolio Assistant</p>
             </div>
           </div>
         </div>
@@ -284,9 +294,9 @@ export const ChatInterface = () => {
         <div className="space-y-6">
           {messages.map((message, index) => (
             <div key={index} className={`flex gap-4 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-              {message.type === 'ai' && (
+              {message.type === 'assistant' && (
                 <img 
-                  src={profileAvatar} 
+                  src="/hasnain.jpg" 
                   alt="Mohammed Hasnain"
                   className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1"
                 />
@@ -302,7 +312,7 @@ export const ChatInterface = () => {
                   ) : (
                     <TypewriterText 
                       text={message.content}
-                      speed={message.type === 'ai' ? 20 : 0}
+                      speed={message.type === 'assistant' ? 20 : 0}
                       className={`whitespace-pre-wrap ${
                         message.type === 'user' ? 'text-white' : 'text-portfolio-text'
                       }`}
