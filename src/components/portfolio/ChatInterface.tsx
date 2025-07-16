@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Send, Loader2 } from "lucide-react";
 import { portfolioData } from "@/data/portfolioData";
 import profileAvatar from "@/assets/profile-avatar.png";
 
@@ -145,34 +145,112 @@ I'd be happy to tell you more about my projects, skills, experience, or anything
 What would you like to know more about? 🚀`;
 };
 
+// Hook for typing effect
+const useTypingEffect = (text: string, speed: number = 30) => {
+  const [displayText, setDisplayText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (!text) return;
+    
+    setIsTyping(true);
+    setDisplayText("");
+    
+    let currentIndex = 0;
+    const timer = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        setIsTyping(false);
+        clearInterval(timer);
+      }
+    }, speed);
+
+    return () => clearInterval(timer);
+  }, [text, speed]);
+
+  return { displayText, isTyping };
+};
+
+// Typing indicator component
+const TypingIndicator = () => (
+  <div className="flex gap-1 items-center p-4">
+    <div className="flex gap-1">
+      <div className="w-2 h-2 bg-portfolio-text-muted rounded-full animate-bounce"></div>
+      <div className="w-2 h-2 bg-portfolio-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+      <div className="w-2 h-2 bg-portfolio-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+    </div>
+    <span className="text-portfolio-text-muted text-sm ml-2">Mohammed is typing...</span>
+  </div>
+);
+
 export const ChatInterface = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState<Array<{type: 'user' | 'ai', content: string}>>([]);
+  const [messages, setMessages] = useState<Array<{
+    type: 'user' | 'ai', 
+    content: string,
+    isLoading?: boolean,
+    fullContent?: string
+  }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const initialQuery = searchParams.get("query");
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   useEffect(() => {
     if (initialQuery) {
-      const response = generateResponse(initialQuery);
+      setIsLoading(true);
       setMessages([
         { type: 'user', content: initialQuery },
-        { type: 'ai', content: response }
+        { type: 'ai', content: '', isLoading: true }
       ]);
+      
+      // Simulate API delay
+      setTimeout(() => {
+        const response = generateResponse(initialQuery);
+        setMessages([
+          { type: 'user', content: initialQuery },
+          { type: 'ai', content: response, fullContent: response }
+        ]);
+        setIsLoading(false);
+      }, 1000 + Math.random() * 1000); // 1-2 seconds delay
     }
   }, [initialQuery]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim()) {
-      const response = generateResponse(newMessage);
+    if (newMessage.trim() && !isLoading) {
+      const userMessage = newMessage.trim();
+      setNewMessage("");
+      setIsLoading(true);
+      
+      // Add user message immediately
       setMessages(prev => [
         ...prev,
-        { type: 'user', content: newMessage },
-        { type: 'ai', content: response }
+        { type: 'user', content: userMessage },
+        { type: 'ai', content: '', isLoading: true }
       ]);
-      setNewMessage("");
+      
+      // Simulate API delay
+      setTimeout(() => {
+        const response = generateResponse(userMessage);
+        setMessages(prev => [
+          ...prev.slice(0, -1), // Remove loading message
+          { type: 'ai', content: response, fullContent: response }
+        ]);
+        setIsLoading(false);
+      }, 1000 + Math.random() * 1500); // 1-2.5 seconds delay
     }
   };
 
@@ -202,7 +280,7 @@ export const ChatInterface = () => {
       </header>
 
       {/* Chat Messages */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8 pb-24">
         <div className="space-y-6">
           {messages.map((message, index) => (
             <div key={index} className={`flex gap-4 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -214,25 +292,32 @@ export const ChatInterface = () => {
                 />
               )}
               <div className={`max-w-[70%] ${message.type === 'user' ? 'order-1' : ''}`}>
-                <div className={`px-4 py-3 rounded-2xl ${
+                <div className={`px-4 py-3 rounded-2xl transition-all duration-200 ${
                   message.type === 'user' 
-                    ? 'bg-portfolio-accent text-white' 
-                    : 'bg-portfolio-card border border-portfolio-border'
+                    ? 'bg-portfolio-accent text-white animate-scale-in' 
+                    : 'bg-portfolio-card border border-portfolio-border animate-fade-in'
                 }`}>
-                  <p className={`whitespace-pre-wrap ${
-                    message.type === 'user' ? 'text-white' : 'text-portfolio-text'
-                  }`}>
-                    {message.content}
-                  </p>
+                  {message.isLoading ? (
+                    <TypingIndicator />
+                  ) : (
+                    <TypewriterText 
+                      text={message.content}
+                      speed={message.type === 'ai' ? 20 : 0}
+                      className={`whitespace-pre-wrap ${
+                        message.type === 'user' ? 'text-white' : 'text-portfolio-text'
+                      }`}
+                    />
+                  )}
                 </div>
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
       {/* Input Form */}
-      <div className="fixed bottom-0 left-0 right-0 bg-portfolio-bg border-t border-portfolio-border">
+      <div className="fixed bottom-0 left-0 right-0 bg-portfolio-bg/80 backdrop-blur-sm border-t border-portfolio-border">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <form onSubmit={handleSendMessage} className="flex gap-3">
             <input
@@ -240,17 +325,39 @@ export const ChatInterface = () => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Ask me anything..."
-              className="flex-1 px-4 py-3 bg-portfolio-card border border-portfolio-border rounded-full text-portfolio-text placeholder:text-portfolio-text-muted focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent"
+              disabled={isLoading}
+              className="flex-1 px-4 py-3 bg-portfolio-card border border-portfolio-border rounded-full text-portfolio-text placeholder:text-portfolio-text-muted focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             />
             <button
               type="submit"
-              className="w-12 h-12 bg-portfolio-accent text-white rounded-full flex items-center justify-center hover:bg-portfolio-accent/90 transition-colors flex-shrink-0"
+              disabled={isLoading || !newMessage.trim()}
+              className="w-12 h-12 bg-portfolio-accent text-white rounded-full flex items-center justify-center hover:bg-portfolio-accent/90 transition-all duration-200 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-portfolio-accent"
             >
-              <Send className="w-5 h-5" />
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Send className="w-5 h-5" />
+              )}
             </button>
           </form>
         </div>
       </div>
+    </div>
+  );
+};
+
+// Typewriter text component
+const TypewriterText = ({ text, speed = 30, className = "" }: { 
+  text: string, 
+  speed?: number, 
+  className?: string 
+}) => {
+  const { displayText, isTyping } = useTypingEffect(text, speed);
+  
+  return (
+    <div className={className}>
+      {displayText}
+      {isTyping && <span className="animate-pulse">|</span>}
     </div>
   );
 };

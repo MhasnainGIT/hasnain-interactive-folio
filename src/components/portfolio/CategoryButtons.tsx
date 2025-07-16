@@ -49,12 +49,12 @@ export const CategoryButtons = () => {
           <button
             key={category.id}
             onClick={() => handleCategoryClick(category.query)}
-            className="flex flex-col items-center gap-2 p-4 bg-portfolio-card border border-portfolio-border rounded-2xl hover:bg-portfolio-hover transition-colors group min-w-[100px]"
+            className="flex flex-col items-center gap-2 p-4 bg-portfolio-card border border-portfolio-border rounded-2xl hover:bg-portfolio-hover transition-all duration-200 group min-w-[100px] hover:scale-105 active:scale-95 hover:shadow-lg"
           >
-            <div className="w-8 h-8 text-portfolio-accent">
+            <div className="w-8 h-8 text-portfolio-accent group-hover:scale-110 transition-transform duration-200">
               <Icon className="w-full h-full" />
             </div>
-            <span className="text-sm font-medium text-portfolio-text-muted group-hover:text-portfolio-text transition-colors">
+            <span className="text-sm font-medium text-portfolio-text-muted group-hover:text-portfolio-text transition-colors duration-200">
               {category.label}
             </span>
           </button>

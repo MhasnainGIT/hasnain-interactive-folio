@@ -25,7 +25,8 @@ export const ChatInput = () => {
         />
         <button
           type="submit"
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-portfolio-accent text-white rounded-full flex items-center justify-center hover:bg-portfolio-accent/90 transition-colors"
+          disabled={!query.trim()}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-portfolio-accent text-white rounded-full flex items-center justify-center hover:bg-portfolio-accent/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
         >
           <ArrowRight className="w-4 h-4" />
         </button>
