@@ -19,7 +19,7 @@ export const ProfileSection = () => {
       {/* Profile Avatar */}
       <div className="mb-12">
         <img 
-          src="/hasnain.jpg" 
+          src="/IMG_7907.PNG" 
           alt="Mohammed Hasnain"
           className="w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full object-cover shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
         />
