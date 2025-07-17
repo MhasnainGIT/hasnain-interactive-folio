@@ -37,7 +37,7 @@ I'm always learning new technologies and staying updated with the latest trends 
 - Provides GPT-based resume reviews for job seekers
 - Increased user shortlisting success by ~25%
 - Features structured feedback and semantic suggestions
-- [Live Demo Available]
+- [Live Demo Available](https://jobready-ai-1.onrender.com)
 
 🔬 **Skin Disease Detection Using Deep Learning**
 - Developed using TensorFlow, MobileNet, Python, Flask, and React
@@ -272,12 +272,13 @@ export const ChatInterface = () => {
           <button
             onClick={() => navigate("/")}
             className="p-2 hover:bg-portfolio-hover rounded-full transition-colors"
+            title="Go back to home"
           >
             <ArrowLeft className="w-5 h-5 text-portfolio-text" />
           </button>
           <div className="flex items-center gap-3">
             <img 
-              src="/hasnain.jpg" 
+              src="/IMG_7907.PNG" 
               alt="Mohammed Hasnain"
               className="w-10 h-10 rounded-full object-cover"
             />
@@ -296,7 +297,7 @@ export const ChatInterface = () => {
             <div key={index} className={`flex gap-4 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
               {message.type === 'assistant' && (
                 <img 
-                  src="/hasnain.jpg" 
+                  src="/IMG_7907.PNG" 
                   alt="Mohammed Hasnain"
                   className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1"
                 />
