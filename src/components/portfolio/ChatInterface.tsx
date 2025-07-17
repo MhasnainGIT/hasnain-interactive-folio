@@ -17,7 +17,7 @@ I'm particularly passionate about software engineering and web development, whic
 
 🤖 **JobReady – Resume Feedback Platform**
 - Built with React.js, Node.js, Express, and MongoDB
-- [Live Demo Available]
+- <a href="https://jobready-ai-1.onrender.com" target="_blank" rel="noopener noreferrer">Live Demo Available</a>
 - Trained CNN model to classify 7 skin diseases using transfer learning
 
 Currently, I'm working on expanding the JobReady platform with new features like interview preparation and job matching algorithms. I'm also exploring computer vision applications in healthcare and building more tools to solve real-world problems.
